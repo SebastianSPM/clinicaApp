@@ -103,16 +103,14 @@ public class ClinicaService implements Consultable {
         System.out.println("Médico registrado exitosamente.");
     }
 
-    public Medico buscarPorNombreApellido(
-            String nombre,
-            String apellido) {
-
+    public Medico buscarPorNombreApellido(String nombre, String apellido) {
         for (Medico medico : medicos) {
             if (medico.getNombre().equalsIgnoreCase(nombre)
                     && medico.getApellido().equalsIgnoreCase(apellido)) {
                 return medico;
             }
         }
+
         return null;
     }
 
@@ -202,20 +200,6 @@ public class ClinicaService implements Consultable {
         }
 
         System.out.println("Turno no encontrado.");
-    }
-
-    public void listarTurnos() {
-        if (turnos.isEmpty()) {
-            System.out.println("No hay turnos registrados.");
-            return;
-        }
-
-        List<Turno> copia = new ArrayList<>(turnos);
-        copia.sort(Comparator.comparing(Turno::getFechaHora));
-
-        for (Turno turno : copia) {
-            System.out.println(turno);
-        }
     }
 
     public Turno buscarTurnoPorId(int idTurno) {
