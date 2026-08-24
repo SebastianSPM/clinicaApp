@@ -18,9 +18,9 @@ public class ClinicaService implements Consultable {
     private List<Turno> turnos;
 
     public ClinicaService() {
-        this.pacientes = new ArrayList<>();
-        this.medicos = new ArrayList<>();
-        this.turnos = new ArrayList<>();
+        pacientes = new ArrayList<>();
+        medicos = new ArrayList<>();
+        turnos = new ArrayList<>();
     }
 
     public List<Paciente> getPacientes() {
@@ -35,17 +35,26 @@ public class ClinicaService implements Consultable {
         return turnos;
     }
 
-    public void registrarPaciente(Paciente paciente) {
-        if (!paciente.esValido()) {
-            throw new IllegalArgumentException(
-                    "Los datos del paciente no son válidos.");
+    //paciente
+    public void registrarPaciente(Paciente p) {
+        if (!p.esValido()) {
+            System.out.println("Error: datos del paciente inválidos.");
+            return;
         }
-        if (buscarPorCedula(paciente.getCedula()) != null) {
-            throw new IllegalArgumentException(
-                    "Ya existe un paciente con esa cédula.");
+        if (pacientes.contains(p)) {
+            System.out.println("Error: ya existe un paciente con esa cédula.");
+            return;
         }
-        paciente.setId(pacientes.size() + 1);
-        pacientes.add(paciente);
+
+        int maxId = 0;
+        for (Paciente paciente : pacientes) {
+            if (paciente.getId() > maxId) {
+                maxId = paciente.getId();
+            }
+        }
+        p.setId(maxId + 1);
+        pacientes.add(p);
+        System.out.println("Paciente registrado exitosamente.");
     }
 
     public Paciente buscarPorCedula(String cedula) {
@@ -62,6 +71,7 @@ public class ClinicaService implements Consultable {
             System.out.println("No hay pacientes registrados.");
             return;
         }
+
         List<Paciente> copia = new ArrayList<>(pacientes);
         copia.sort(
                 Comparator.comparing(Paciente::getApellido)
@@ -72,18 +82,31 @@ public class ClinicaService implements Consultable {
         }
     }
 
-    public void registrarMedico(Medico medico) {
-        if (!medico.esValido()) {
-            throw new IllegalArgumentException(
-                    "Los datos del médico no son válidos.");
+    //medicos
+    public void registrarMedico(Medico m) {
+        if (!m.esValido()) {
+            System.out.println("Error: datos del médico inválidos.");
+            return;
         }
-        medico.setId(medicos.size() + 1);
-        medicos.add(medico);
+        if (medicos.contains(m)) {
+            System.out.println("Error: el médico ya existe.");
+            return;
+        }
+        int maxId = 0;
+        for (Medico medico : medicos) {
+            if (medico.getId() > maxId) {
+                maxId = medico.getId();
+            }
+        }
+        m.setId(maxId + 1);
+        medicos.add(m);
+        System.out.println("Médico registrado exitosamente.");
     }
 
     public Medico buscarPorNombreApellido(
             String nombre,
             String apellido) {
+
         for (Medico medico : medicos) {
             if (medico.getNombre().equalsIgnoreCase(nombre)
                     && medico.getApellido().equalsIgnoreCase(apellido)) {
@@ -98,6 +121,7 @@ public class ClinicaService implements Consultable {
             System.out.println("No hay médicos registrados.");
             return;
         }
+
         List<Medico> copia = new ArrayList<>(medicos);
         copia.sort(
                 Comparator.comparing(Medico::getEspecialidad)
@@ -108,31 +132,39 @@ public class ClinicaService implements Consultable {
         }
     }
 
-    public void asignarTurno(Turno turno) {
-        if (turno.getPaciente() == null) {
-            throw new IllegalArgumentException(
-                    "Debe seleccionar un paciente.");
+    //turnos
+    public void asignarTurno(Turno t) {
+        if (!pacientes.contains(t.getPaciente())) {
+            System.out.println("Error: paciente no registrado.");
+            return;
         }
-        if (turno.getMedico() == null) {
-            throw new IllegalArgumentException(
-                    "Debe seleccionar un médico.");
+        if (!medicos.contains(t.getMedico())) {
+            System.out.println("Error: médico no registrado.");
+            return;
         }
-
-        for (Turno t : turnos) {
+        for (Turno turno : turnos) {
             boolean mismoMedico =
-                    t.getMedico().equals(turno.getMedico());
+                    turno.getMedico().equals(t.getMedico());
             boolean mismaFechaHora =
-                    t.getFechaHora().equals(turno.getFechaHora());
+                    turno.getFechaHora().equals(t.getFechaHora());
             if (mismoMedico && mismaFechaHora) {
-                throw new IllegalArgumentException(
-                        "El médico ya tiene un turno asignado en ese horario.");
+                System.out.println(
+                        "Error: el médico ya tiene un turno en ese horario.");
+                return;
             }
         }
-        turno.setId(turnos.size() + 1);
-        turnos.add(turno);
+        int maxId = 0;
+        for (Turno turno : turnos) {
+            if (turno.getId() > maxId) {
+                maxId = turno.getId();
+            }
+        }
+        t.setId(maxId + 1);
+        turnos.add(t);
+        System.out.println("Turno asignado exitosamente.");
     }
-    public void cancelarTurno(int idTurno) {
 
+    public void cancelarTurno(int idTurno) {
         for (Turno turno : turnos) {
             if (turno.getId() == idTurno) {
                 if (turno.getEstado() == EstadoTurno.ATENDIDO) {
@@ -140,28 +172,34 @@ public class ClinicaService implements Consultable {
                             "No se puede cancelar un turno atendido.");
                     return;
                 }
-                turno.setEstado(EstadoTurno.CANCELADO);
-                System.out.println("Turno cancelado correctamente.");
-                return;
-            }
-        }
-        System.out.println("No se encontró el turno.");
-    }
-
-    public void atenderTurno(int idTurno) {
-        for (Turno turno : turnos) {
-            if (turno.getId() == idTurno) {
                 if (turno.getEstado() == EstadoTurno.CANCELADO) {
                     System.out.println(
-                            "No se puede atender un turno cancelado.");
+                            "El turno ya está cancelado.");
                     return;
                 }
-                turno.setEstado(EstadoTurno.ATENDIDO);
-                System.out.println("Turno marcado como atendido.");
+
+                turno.setEstado(EstadoTurno.CANCELADO);
+                System.out.println(
+                        "Turno cancelado correctamente.");
                 return;
             }
         }
-        System.out.println("No se encontró el turno.");
+        System.out.println("Turno no encontrado.");
+    }
+
+    public void cambiarEstadoTurno(
+            int idTurno,
+            EstadoTurno nuevo) {
+
+        for (Turno turno : turnos) {
+            if (turno.getId() == idTurno) {
+                turno.setEstado(nuevo);
+                System.out.println(
+                        "Estado actualizado a: " + nuevo);
+                return;
+            }
+        }
+        System.out.println("Turno no encontrado.");
     }
 
     public void listarTurnos() {
@@ -169,15 +207,17 @@ public class ClinicaService implements Consultable {
             System.out.println("No hay turnos registrados.");
             return;
         }
-        turnos.sort(
+
+        List<Turno> copia = new ArrayList<>(turnos);
+        copia.sort(
                 Comparator.comparing(Turno::getFechaHora)
         );
-
-        for (Turno turno : turnos) {
+        for (Turno turno : copia) {
             System.out.println(turno);
         }
     }
 
+    //consultable
     @Override
     public List<Turno> listarTurnosDelDia(LocalDate fecha) {
         List<Turno> resultado = new ArrayList<>();
@@ -189,6 +229,7 @@ public class ClinicaService implements Consultable {
                 resultado.add(turno);
             }
         }
+
         resultado.sort(
                 Comparator.comparing(Turno::getFechaHora)
         );
