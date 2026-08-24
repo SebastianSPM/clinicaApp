@@ -14,6 +14,12 @@ public class Medico implements Registrable {
         this.especialidad = especialidad;
     }
 
+    public Medico(int id, String nombre, String apellido, Especialidad especialidad){
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.especialidad = especialidad;
+    }
+
     public int getId() {
         return id;
     }
