@@ -36,7 +36,11 @@ public class Paciente {
 
     public void setCedula(String cedula) {
         if (cedula == null || cedula.trim().isEmpty()) {
-            throw new IllegalArgumentException("la cedula no puede ser vacia");
+            throw new IllegalArgumentException("La cedula no puede ser vacia.");
+        }
+
+        if (!cedula.matches("^\\d+$")) {
+            throw new IllegalArgumentException("La cedula solo puede contener numeros.");
         }
 
         this.cedula = cedula;
@@ -71,7 +75,7 @@ public class Paciente {
     }
 
     public void setTelefono(String telefono) {
-        if (telefono == null || !telefono.matches("^[0-9] {7,10}$")) {
+        if (telefono == null || !telefono.matches("^[0-9]{7,10}$")) {
             throw new IllegalArgumentException("El telefono debe tener mas de 7 digitos y menos de 10");
         }
 
@@ -85,6 +89,7 @@ public class Paciente {
         }
         if (o instanceof Paciente) {
             Paciente paciente = (Paciente) o;
+
             if (this.cedula.equals(paciente.cedula)) {
                 return true;
             }
@@ -96,7 +101,7 @@ public class Paciente {
 
     @Override
     public String toString () {
-        return nombre + "" + apellido + " - " + cedula + " - " + telefono;
+        return nombre + " " + apellido + " - " + cedula + " - " + telefono;
     }
 }
 

@@ -44,11 +44,13 @@ public class ClinicaService implements Consultable {
         }
 
         int maxId = 0;
+
         for (Paciente paciente : pacientes) {
             if (paciente.getId() > maxId) {
                 maxId = paciente.getId();
             }
         }
+
         p.setId(maxId + 1);
         pacientes.add(p);
         System.out.println("Paciente registrado exitosamente.");
@@ -60,6 +62,7 @@ public class ClinicaService implements Consultable {
                 return paciente;
             }
         }
+
         return null;
     }
 
@@ -70,10 +73,8 @@ public class ClinicaService implements Consultable {
         }
 
         List<Paciente> copia = new ArrayList<>(pacientes);
-        copia.sort(
-                Comparator.comparing(Paciente::getApellido)
-                        .thenComparing(Paciente::getNombre)
-        );
+        copia.sort(Comparator.comparing(Paciente::getApellido).thenComparing(Paciente::getNombre));
+
         for (Paciente paciente : copia) {
             System.out.println(paciente);
         }
@@ -90,11 +91,13 @@ public class ClinicaService implements Consultable {
             return;
         }
         int maxId = 0;
+
         for (Medico medico : medicos) {
             if (medico.getId() > maxId) {
                 maxId = medico.getId();
             }
         }
+
         m.setId(maxId + 1);
         medicos.add(m);
         System.out.println("Médico registrado exitosamente.");
@@ -120,10 +123,8 @@ public class ClinicaService implements Consultable {
         }
 
         List<Medico> copia = new ArrayList<>(medicos);
-        copia.sort(
-                Comparator.comparing(Medico::getEspecialidad)
-                        .thenComparing(Medico::getApellido)
-        );
+        copia.sort(Comparator.comparing(Medico::getEspecialidad).thenComparing(Medico::getApellido));
+
         for (Medico medico : copia) {
             System.out.println(medico);
         }
@@ -135,10 +136,12 @@ public class ClinicaService implements Consultable {
             System.out.println("Error: paciente no registrado.");
             return;
         }
+
         if (!medicos.contains(t.getMedico())) {
             System.out.println("Error: médico no registrado.");
             return;
         }
+
         for (Turno turno : turnos) {
             boolean mismoMedico =
                     turno.getMedico().equals(t.getMedico());
@@ -150,12 +153,15 @@ public class ClinicaService implements Consultable {
                 return;
             }
         }
+
         int maxId = 0;
+
         for (Turno turno : turnos) {
             if (turno.getId() > maxId) {
                 maxId = turno.getId();
             }
         }
+
         t.setId(maxId + 1);
         turnos.add(t);
         System.out.println("Turno asignado exitosamente.");
@@ -169,6 +175,7 @@ public class ClinicaService implements Consultable {
                             "No se puede cancelar un turno atendido.");
                     return;
                 }
+
                 if (turno.getEstado() == EstadoTurno.CANCELADO) {
                     System.out.println(
                             "El turno ya está cancelado.");
@@ -181,6 +188,7 @@ public class ClinicaService implements Consultable {
                 return;
             }
         }
+
         System.out.println("Turno no encontrado.");
     }
 
@@ -191,11 +199,11 @@ public class ClinicaService implements Consultable {
         for (Turno turno : turnos) {
             if (turno.getId() == idTurno) {
                 turno.setEstado(nuevo);
-                System.out.println(
-                        "Estado actualizado a: " + nuevo);
+                System.out.println("Estado actualizado a: " + nuevo);
                 return;
             }
         }
+
         System.out.println("Turno no encontrado.");
     }
 
@@ -206,9 +214,8 @@ public class ClinicaService implements Consultable {
         }
 
         List<Turno> copia = new ArrayList<>(turnos);
-        copia.sort(
-                Comparator.comparing(Turno::getFechaHora)
-        );
+        copia.sort(Comparator.comparing(Turno::getFechaHora));
+
         for (Turno turno : copia) {
             System.out.println(turno);
         }
@@ -230,6 +237,7 @@ public class ClinicaService implements Consultable {
         resultado.sort(
                 Comparator.comparing(Turno::getFechaHora)
         );
+
         return resultado;
     }
 
@@ -242,6 +250,7 @@ public class ClinicaService implements Consultable {
                 resultado.add(turno);
             }
         }
+
         return resultado;
     }
 
