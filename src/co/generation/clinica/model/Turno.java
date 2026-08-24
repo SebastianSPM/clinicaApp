@@ -16,6 +16,14 @@ public class Turno {
         this.estado = estado;
     }
 
+    public Turno(int id, Paciente paciente, Medico medico, LocalDateTime fechaHora, EstadoTurno estado) {
+        this.id = id;
+        this.paciente = paciente;
+        this.medico = medico;
+        this.fechaHora = fechaHora;
+        this.estado = estado;
+    }
+
     public int getId() {
         return id;
     }

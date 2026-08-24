@@ -83,17 +83,14 @@ public class Paciente {
         if (this == o) {
             return true;
         }
-
         if (o instanceof Paciente) {
             Paciente paciente = (Paciente) o;
-
             if (this.cedula.equals(paciente.cedula)) {
                 return true;
             }
 
             return false;
         }
-
         return false;
     }
 

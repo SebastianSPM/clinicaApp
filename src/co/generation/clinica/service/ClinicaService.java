@@ -37,10 +37,7 @@ public class ClinicaService implements Consultable {
 
     //paciente
     public void registrarPaciente(Paciente p) {
-        if (!p.esValido()) {
-            System.out.println("Error: datos del paciente inválidos.");
-            return;
-        }
+
         if (pacientes.contains(p)) {
             System.out.println("Error: ya existe un paciente con esa cédula.");
             return;
