@@ -41,14 +41,26 @@ public class Turno {
     }
 
     public void setPaciente(Paciente paciente) {
+        if (paciente == null) {
+            throw new IllegalArgumentException("No se puede asignar un turno sin especificar el paciente.");
+        }
+
         this.paciente = paciente;
     }
 
     public void setMedico(Medico medico) {
+        if (medico == null) {
+            throw new IllegalArgumentException("No se puede asignar un turno sin especificar el médico.");
+        }
+
         this.medico = medico;
     }
 
     public void setFechaHora(LocalDateTime fechaHora) {
+        if (fechaHora == null) {
+            throw new IllegalArgumentException("No se puede asignar un turno sin especificar la fecha y hora.");
+        }
+
         this.fechaHora = fechaHora;
     }
 
