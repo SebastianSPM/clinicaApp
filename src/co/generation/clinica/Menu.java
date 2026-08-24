@@ -211,8 +211,14 @@ public class Menu {
 
         int id = leerEntero("ID del turno: ");
 
-        EstadoTurno nuevoEstado = elegirEstado();
+        Turno turno = servicio.buscarTurnoPorId(id);
 
+        if (turno == null) {
+            System.out.println("Turno no encontrado.");
+            return;
+        }
+
+        EstadoTurno nuevoEstado = elegirEstado();
         servicio.cambiarEstadoTurno(id, nuevoEstado);
     }
 

@@ -192,10 +192,7 @@ public class ClinicaService implements Consultable {
         System.out.println("Turno no encontrado.");
     }
 
-    public void cambiarEstadoTurno(
-            int idTurno,
-            EstadoTurno nuevo) {
-
+    public void cambiarEstadoTurno(int idTurno, EstadoTurno nuevo) {
         for (Turno turno : turnos) {
             if (turno.getId() == idTurno) {
                 turno.setEstado(nuevo);
@@ -219,6 +216,16 @@ public class ClinicaService implements Consultable {
         for (Turno turno : copia) {
             System.out.println(turno);
         }
+    }
+
+    public Turno buscarTurnoPorId(int idTurno) {
+        for (Turno turno : turnos) {
+            if (turno.getId() == idTurno) {
+                return turno;
+            }
+        }
+
+        return null;
     }
 
     //consultable
