@@ -9,8 +9,7 @@ public class Turno {
     private LocalDateTime fechaHora;
     private EstadoTurno estado;
 
-    public Turno(int id, Paciente paciente, Medico medico, LocalDateTime fechaHora, EstadoTurno estado) {
-        this.id = id;
+    public Turno(Paciente paciente, Medico medico, LocalDateTime fechaHora, EstadoTurno estado) {
         this.paciente = paciente;
         this.medico = medico;
         this.fechaHora = fechaHora;
